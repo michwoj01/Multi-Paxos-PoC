@@ -1,9 +1,11 @@
 FROM ubuntu:20.04
 
+ENV DEBIAN_FRONTEND noninteractive
+
 # Update and install dependencies
 RUN apt-get update && \
-    apt-get install -y wget llvm clang gpg curl tar xz-utils make gcc flex bison libssl-dev \
-    libelf-dev protobuf-compiler pkg-config libunwind-dev libprotobuf-dev libevent-dev \
+    apt-get install -y wget llvm bc g++ clang gpg curl tar xz-utils make gcc flex bison libssl-dev \
+    libelf-dev protobuf-compiler pkg-config libunwind-dev libssl-dev libprotobuf-dev libevent-dev \
     libgtest-dev iproute2 ethtool iputils-ping git
 
 # # Install kernel 5.8.0
@@ -17,11 +19,17 @@ COPY ./Electrode /app
 
 WORKDIR /app
 
-# Build the xdp modules and replica code
+# # Build the xdp modules and replica code
+# RUN bash kernel-src-download.sh && \
+#     bash kernel-src-prepare.sh && \
+#     make clean && make CXXFLAGS="-DTC_BROADCAST -DFAST_QUORUM_PRUNE -DFAST_REPLY" && \
+#     cd xdp-handler && make clean && make EXTRA_CFLAGS="-DTC_BROADCAST -DFAST_QUORUM_PRUNE -DFAST_REPLY"
+
+Build the xdp modules and replica code
 RUN bash kernel-src-download.sh && \
     bash kernel-src-prepare.sh && \
-    make clean && make CXXFLAGS="-DTC_BROADCAST -DFAST_QUORUM_PRUNE -DFAST_REPLY" && \
-    cd xdp-handler && make clean && make EXTRA_CFLAGS="-DTC_BROADCAST -DFAST_QUORUM_PRUNE -DFAST_REPLY"
+    cd xdp-handler && make clean && make && \
+    cd .. && make clean && make PARANOID=0
 
 # Configure NIC and irqbalance
 RUN sudo ifconfig ens1f1np1 mtu 3000 up && \
