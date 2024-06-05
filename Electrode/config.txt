@@ -1,0 +1,4 @@
+f 1
+replica replica1:10001
+replica replica2:10002
+replica replica3:10003

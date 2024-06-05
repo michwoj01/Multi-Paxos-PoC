@@ -1,25 +1,41 @@
 version: '3.8'
 
 services:
-  ubuntu1:
-    image: ubuntu:20.04
-    container_name: ubuntu1
+  replica1:
+    build: .
+    container_name: replica1
     networks:
-      - mynetwork
-    command: sleep infinity 
-  ubuntu2:
-    image: ubuntu:20.04
-    container_name: ubuntu2
+      - electrode_net
+    command: /bin/bash -c "sudo ./bench/replica -c /app/config.txt -m vr -i 0"
+    privileged: true
+
+  replica2:
+    build: .
+    container_name: replica2
     networks:
-      - mynetwork
-    command: sleep infinity
-  ubuntu3:
-    image: ubuntu:20.04
-    container_name: ubuntu3
+      - electrode_net
+    command: /bin/bash -c "sudo ./bench/replica -c /app/config.txt -m vr -i 1"
+    privileged: true
+
+  replica3:
+    build: .
+    container_name: replica3
     networks:
-      - mynetwork
-    command: sleep infinity 
+      - electrode_net
+    command: /bin/bash -c "sudo ./bench/replica -c /app/config.txt -m vr -i 2"
+    privileged: true
+
+  client:
+    build: .
+    container_name: client
+    networks:
+      - electrode_net
+    depends_on:
+      - replica1
+      - replica2
+      - replica3
+    command: /bin/bash -c "./bench/client -c /app/config.txt -m vr -n 10000"
 
 networks:
-  mynetwork:
+  electrode_net:
     driver: bridge
