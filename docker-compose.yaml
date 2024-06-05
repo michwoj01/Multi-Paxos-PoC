@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  ubuntu1:
+    image: ubuntu:20.04
+    container_name: ubuntu1
+    networks:
+      - mynetwork
+    command: sleep infinity 
+  ubuntu2:
+    image: ubuntu:20.04
+    container_name: ubuntu2
+    networks:
+      - mynetwork
+    command: sleep infinity
+  ubuntu3:
+    image: ubuntu:20.04
+    container_name: ubuntu3
+    networks:
+      - mynetwork
+    command: sleep infinity 
+
+networks:
+  mynetwork:
+    driver: bridge
