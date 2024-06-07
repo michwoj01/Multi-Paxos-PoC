@@ -4,7 +4,7 @@ services:
     container_name: replica1
     networks:
       - electrode_net
-    command: /bin/bash -c "sudo ./bench/replica -c /app/config.txt -m vr -i 0"
+    command: /bin/bash -c "./bench/replica -c /app/config.txt -m vr -i 0"
     privileged: true
 
   replica2:
@@ -12,7 +12,7 @@ services:
     container_name: replica2
     networks:
       - electrode_net
-    command: /bin/bash -c "sudo ./bench/replica -c /app/config.txt -m vr -i 1"
+    command: /bin/bash -c "./bench/replica -c /app/config.txt -m vr -i 1"
     privileged: true
 
   replica3:
@@ -20,7 +20,7 @@ services:
     container_name: replica3
     networks:
       - electrode_net
-    command: /bin/bash -c "sudo ./bench/replica -c /app/config.txt -m vr -i 2"
+    command: /bin/bash -c "./bench/replica -c /app/config.txt -m vr -i 2"
     privileged: true
 
   client:

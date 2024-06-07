@@ -76,10 +76,10 @@ clean:
 	rm -f $(KERN_OBJECTS)
 	rm -f $(USER_OBJECTS)
 	rm -f $(OBJECT_LOADBPF)
-	sudo rm -f /sys/fs/bpf/paxos_prepare_buffer
-	sudo rm -f /sys/fs/bpf/paxos_request_buffer
-	sudo rm -f /sys/fs/bpf/paxos_ctr_state
-	sudo rm -f /sys/fs/bpf/FastBroadCast
+	rm -f /sys/fs/bpf/paxos_prepare_buffer
+	rm -f /sys/fs/bpf/paxos_request_buffer
+	rm -f /sys/fs/bpf/paxos_ctr_state
+	rm -f /sys/fs/bpf/FastBroadCast
 
 dependencies: verify_target_bpf
 
