@@ -2,49 +2,54 @@ version: '3.8'
 
 services:
   replica1:
-    image: electrode/multipaxos
+    build: ./
     container_name: replica1
     networks:
       - electrode_net
-    command: /bin/bash -c "mkdir -p /sys/fs/bpf && mount -t bpf bpf /sys/fs/bpf && mkdir -p /sys/fs/cgroup && mount -t cgroup2 none /sys/fs/cgroup && ./bench/replica -c /app/config.txt -m vr -i 0"
+    command: /bin/bash -c "taskset -c 1 ./bench/replica -c config.txt -m vr -i 0"
+    cap_add:
+      - SYS_ADMIN
+      - SYS_RESOURCE
     privileged: true
-    volumes:
-      - /sys/fs/bpf:/sys/fs/bpf
 
   replica2:
-    image: electrode/multipaxos
+    build: ./
     container_name: replica2
     networks:
       - electrode_net
-    command: /bin/bash -c "mkdir -p /sys/fs/bpf && mount -t bpf bpf /sys/fs/bpf && mkdir -p /sys/fs/cgroup && mount -t cgroup2 none /sys/fs/cgroup && ./bench/replica -c /app/config.txt -m vr -i 1"
+    command: /bin/bash -c "taskset -c 1 ./bench/replica -c config.txt -m vr -i 1" 
+    cap_add:
+      - SYS_ADMIN
+      - SYS_RESOURCE
     privileged: true
-    volumes:
-      - /sys/fs/bpf:/sys/fs/bpf
 
   replica3:
-    image: electrode/multipaxos
+    build: ./
     container_name: replica3
     networks:
       - electrode_net
-    command: /bin/bash -c "mkdir -p /sys/fs/bpf && mount -t bpf bpf /sys/fs/bpf && mkdir -p /sys/fs/cgroup && mount -t cgroup2 none /sys/fs/cgroup && ./bench/replica -c /app/config.txt -m vr -i 2"
+    cap_add:
+      - SYS_ADMIN
+      - SYS_RESOURCE
+    command: /bin/bash -c "taskset -c 1 ./bench/replica -c config.txt -m vr -i 2" 
     privileged: true
-    volumes:
-      - /sys/fs/bpf:/sys/fs/bpf
 
   client:
-    image: electrode/multipaxos
+    build: ./
     container_name: client
+    cap_add:
+      - SYS_ADMIN
+      - SYS_RESOURCE
     networks:
       - electrode_net
     depends_on:
       - replica1
       - replica2
       - replica3
-    command: /bin/bash -c "mkdir -p /sys/fs/bpf && mount -t bpf bpf /sys/fs/bpf && mkdir -p /sys/fs/cgroup && mount -t cgroup2 none /sys/fs/cgroup && ./bench/client -c /app/config.txt -m vr -n 10000"
+    command: /bin/bash -c "./bench/client -c config.txt -m vr -n 10000"
     privileged: true
-    volumes:
-      - /sys/fs/bpf:/sys/fs/bpf
 
 networks:
   electrode_net:
     driver: bridge
+

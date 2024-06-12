@@ -21,6 +21,8 @@ COPY ./Electrode /app
 
 WORKDIR /app
 
+USER root
+
 # Build the xdp modules and replica code
 RUN bash kernel-src-download.sh && \
     bash kernel-src-prepare.sh && \
@@ -34,5 +36,8 @@ RUN ip link show ens1f1np1 && ip link set ens1f1np1 mtu 3000 up || echo "Interfa
     service irqbalance stop && \
     (let CPU=0; cd /sys/class/net/ens1f1np1/device/msi_irqs/; for IRQ in *; do echo $CPU | tee /proc/irq/$IRQ/smp_affinity_list; done) || echo "Skipping IRQ configuration"
 
-    # Run the xdp-handler
-ENTRYPOINT ["./xdp-handler/fast", "ens1f1np1"]
+# Create an entrypoint script to handle mount and start
+RUN echo '#!/bin/bash\nmount -t bpf none /sys/fs/bpf\nexec "$@"' > /usr/local/bin/start.sh && chmod +x /usr/local/bin/start.sh
+
+ENTRYPOINT ["/usr/local/bin/start.sh"]
+CMD ["./xdp-handler/fast", "ens1f1np1"]
