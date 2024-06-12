@@ -18,6 +18,8 @@ services:
     networks:
       - electrode_net
     command: /bin/bash -c "taskset -c 1 ./bench/replica -c config.txt -m vr -i 1" 
+    depends_on:
+      - replica1
     cap_add:
       - SYS_ADMIN
       - SYS_RESOURCE
@@ -32,6 +34,8 @@ services:
       - SYS_ADMIN
       - SYS_RESOURCE
     command: /bin/bash -c "taskset -c 1 ./bench/replica -c config.txt -m vr -i 2" 
+    depends_on:
+      - replica2
     privileged: true
 
   client:

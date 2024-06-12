@@ -26,8 +26,8 @@ USER root
 # Build the xdp modules and replica code
 RUN bash kernel-src-download.sh && \
     bash kernel-src-prepare.sh && \
-    cd xdp-handler && make clean && make && \
-    cd .. && make clean && make PARANOID=0
+    cd xdp-handler && make clean && make EXTRA_CFLAGS="-DTC_BROADCAST" && \
+    cd .. && make clean && make CXXFLAGS="-DTC_BROADCAST" PARANOID=0
 
 # Configure NIC and irqbalance
 RUN ip link show ens1f1np1 && ip link set ens1f1np1 mtu 3000 up || echo "Interface ens1f1np1 not found, skipping configuration" && \
