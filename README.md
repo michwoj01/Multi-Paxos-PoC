@@ -64,3 +64,9 @@ All Dockerfiles have in general the same structure:
     * command you specify in the Docker Compose file
 
 Client container after proper initialization will send requests to the replicas and measure the latency of the responses. The results will be visible in the terminal.
+
+## Results
+
+For 3 replicas, the optimization makes latency drop from 1670ms to 1314ms, which is approximately 21% acceleration.
+
+![alt text](./imgs/image.png)
