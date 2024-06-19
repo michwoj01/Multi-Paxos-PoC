@@ -8,14 +8,6 @@ RUN apt-get update && \
     libelf-dev protobuf-compiler pkg-config libunwind-dev libprotobuf-dev libevent-dev libgtest-dev \
     iproute2 ethtool iputils-ping git net-tools linux-headers-generic systemd bpftrace gdb kmod
 
-# Install kernel 5.8.0
-RUN wget https://raw.githubusercontent.com/pimlie/ubuntu-mainline-kernel.sh/master/ubuntu-mainline-kernel.sh && \
-    bash ubuntu-mainline-kernel.sh -i 5.8.0 && \
-    rm ubuntu-mainline-kernel.sh
-
-# Reboot to load the new kernel
-RUN echo "#!/bin/bash\nreboot" > /usr/sbin/reboot && chmod +x /usr/sbin/reboot
-
 # Clone the Electrode repository
 COPY ./Electrode /app
 COPY ./scenario3/fast_common.h /app/xdp-handler

@@ -1,7 +1,21 @@
 # Multi-Paxos-PoC
 Proof of concept of Multi-Paxos Electrode optimization for Future Internet Technologies course at AGH University of Cracow 2023/24.
 
-# Structure of the repository
+## Inctroduction
+
+After many trials and battles with flags for Electrode applications, we decided to measure impact only for frist optimization flag, TC_BROADCAST.
+
+In Paxos protocols, one-to-all message broadcasting is widely used:
+* the leader node sends preparation messages to all follower nodes 
+* after receiving enough acknowledgments from followers the leader node sends commit messages to all follower nodes
+
+To implement the above message broadcasting, the most common way is sending the same message multiple times in the user space to different destinations. However, the overhead (i.e., user-kernel crossing and kernel networking stack traversing) of this implementation on the leader node increases linearly as the number of followers increases, while the overhead on each follower node remains constant (so the leader node becomes the system bottleneck).
+
+Electrode provides a flexible host-based broadcasting solution by utilizing eBPF on the TC hook. Here, we require the eBPF program that implements broadcasting operations to attach to the TC hook, because only the TC hook can intercept and process outgoing packets (§2.2). After attaching the eBPF program, user-space applications can call the elec_broadcast() function specified sock_fd, message, and a list of destination IPs to broadcast the message to these destinations through the socket.
+
+Under the hood, the eBPF program makes clones of the message packet using the bpf_clone_redirect() helper function, modifies the destination addresses of cloned packets accordingly, and sends these packets out. The benefit of cloning packets and broadcasting in the kernel compared with sending the same message multiple times in the user space is that we only need to cross the user-kernel boundary and traverse the UDP and socket layer once.
+
+## Structure of the repository
 
 In directory `docs` you can find our preliminary understanding of two NSDI conferences and SIGCOMM on the practical use of the eBPF service to optimize the performance of applications or other services.
 
