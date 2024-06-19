@@ -11,6 +11,7 @@ services:
     privileged: true
     volumes:
       - /sys/kernel/debug:/sys/kernel/debug
+      - /sys/fs/bpf:/sys/fs/bpf
 
   replica2:
     image: electrode:scenario7
@@ -26,6 +27,7 @@ services:
     privileged: true
     volumes:
       - /sys/kernel/debug:/sys/kernel/debug
+      - /sys/fs/bpf:/sys/fs/bpf
 
   replica3:
     image: electrode:scenario7
@@ -41,6 +43,7 @@ services:
     privileged: true
     volumes:
       - /sys/kernel/debug:/sys/kernel/debug
+      - /sys/fs/bpf:/sys/fs/bpf
 
   replica4:
     image: electrode:scenario7
@@ -56,6 +59,7 @@ services:
     privileged: true
     volumes:
       - /sys/kernel/debug:/sys/kernel/debug
+      - /sys/fs/bpf:/sys/fs/bpf
 
   replica5:
     image: electrode:scenario7
@@ -71,6 +75,7 @@ services:
     privileged: true
     volumes:
       - /sys/kernel/debug:/sys/kernel/debug
+      - /sys/fs/bpf:/sys/fs/bpf
 
   replica6:
     image: electrode:scenario7
@@ -86,6 +91,7 @@ services:
     privileged: true
     volumes:
       - /sys/kernel/debug:/sys/kernel/debug
+      - /sys/fs/bpf:/sys/fs/bpf
 
   replica7:
     image: electrode:scenario7
@@ -101,6 +107,7 @@ services:
     privileged: true
     volumes:
       - /sys/kernel/debug:/sys/kernel/debug
+      - /sys/fs/bpf:/sys/fs/bpf
 
   client:
     image: electrode:scenario7
@@ -122,6 +129,8 @@ services:
     privileged: true
     volumes:
       - /sys/kernel/debug:/sys/kernel/debug
+      - /sys/fs/bpf:/sys/fs/bpf
+
 networks:
   electrode_net:
     driver: bridge
