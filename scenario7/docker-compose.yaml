@@ -9,7 +9,7 @@ services:
       - SYS_ADMIN
       - SYS_RESOURCE
     privileged: true
-    volume:
+    volumes:
       - /sys/kernel/debug:/sys/kernel/debug
 
   replica2:
@@ -24,7 +24,7 @@ services:
       - SYS_ADMIN
       - SYS_RESOURCE
     privileged: true
-    volume:
+    volumes:
       - /sys/kernel/debug:/sys/kernel/debug
 
   replica3:
@@ -39,7 +39,7 @@ services:
     depends_on:
       - replica2
     privileged: true
-    volume:
+    volumes:
       - /sys/kernel/debug:/sys/kernel/debug
 
   replica4:
@@ -54,6 +54,8 @@ services:
     depends_on:
       - replica3
     privileged: true
+    volumes:
+      - /sys/kernel/debug:/sys/kernel/debug
 
   replica5:
     image: electrode:scenario7
@@ -67,6 +69,8 @@ services:
     depends_on:
       - replica4
     privileged: true
+    volumes:
+      - /sys/kernel/debug:/sys/kernel/debug
 
   replica6:
     image: electrode:scenario7
@@ -80,6 +84,8 @@ services:
     depends_on:
       - replica5
     privileged: true
+    volumes:
+      - /sys/kernel/debug:/sys/kernel/debug
 
   replica7:
     image: electrode:scenario7
@@ -93,9 +99,11 @@ services:
     depends_on:
       - replica6
     privileged: true
+    volumes:
+      - /sys/kernel/debug:/sys/kernel/debug
 
   client:
-    image: electrode
+    image: electrode:scenario7
     container_name: client
     cap_add:
       - SYS_ADMIN
@@ -112,7 +120,7 @@ services:
       - replica7
     command: /bin/bash -c "sleep 10 && ./bench/client -c config.txt -m vr -n 10000"
     privileged: true
-    volume:
+    volumes:
       - /sys/kernel/debug:/sys/kernel/debug
 networks:
   electrode_net:
