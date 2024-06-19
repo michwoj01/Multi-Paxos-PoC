@@ -1,0 +1,92 @@
+services:
+  replica1:
+    image: electrode:scenario5
+    container_name: replica1
+    networks:
+      - electrode_net
+    command: /bin/bash -c "sleep 10 && taskset -c 1 ./bench/replica -c config.txt -m vr -i 0"
+    cap_add:
+      - SYS_ADMIN
+      - SYS_RESOURCE
+    privileged: true
+    volume:
+      - /sys/kernel/debug:/sys/kernel/debug
+
+  replica2:
+    image: electrode:scenario5
+    container_name: replica2
+    networks:
+      - electrode_net
+    command: /bin/bash -c "sleep 10 && taskset -c 1 ./bench/replica -c config.txt -m vr -i 1"
+    depends_on:
+      - replica1
+    cap_add:
+      - SYS_ADMIN
+      - SYS_RESOURCE
+    privileged: true
+    volume:
+      - /sys/kernel/debug:/sys/kernel/debug
+
+  replica3:
+    image: electrode:scenario5
+    container_name: replica3
+    networks:
+      - electrode_net
+    cap_add:
+      - SYS_ADMIN
+      - SYS_RESOURCE
+    command: /bin/bash -c "sleep 10 && taskset -c 1 ./bench/replica -c config.txt -m vr -i 2"
+    depends_on:
+      - replica2
+    privileged: true
+    volume:
+      - /sys/kernel/debug:/sys/kernel/debug
+
+  replica4:
+    image: electrode:scenario5
+    container_name: replica4
+    networks:
+      - electrode_net
+    cap_add:
+      - SYS_ADMIN
+      - SYS_RESOURCE
+    command: /bin/bash -c "sleep 10 && taskset -c 1 ./bench/replica -c config.txt -m vr -i 3"
+    depends_on:
+      - replica3
+    privileged: true
+
+  replica5:
+    image: electrode:scenario5
+    container_name: replica5
+    networks:
+      - electrode_net
+    cap_add:
+      - SYS_ADMIN
+      - SYS_RESOURCE
+    command: /bin/bash -c "sleep 10 && taskset -c 1 ./bench/replica -c config.txt -m vr -i 4"
+    depends_on:
+      - replica4
+    privileged: true
+
+  client:
+    image: electrode
+    container_name: client
+    cap_add:
+      - SYS_ADMIN
+      - SYS_RESOURCE
+    networks:
+      - electrode_net
+    depends_on:
+      - replica1
+      - replica2
+      - replica3
+      - replica4
+      - replica5
+    command: /bin/bash -c "sleep 10 && ./bench/client -c config.txt -m vr -n 10000"
+    privileged: true
+    volume:
+      - /sys/kernel/debug:/sys/kernel/debug
+networks:
+  electrode_net:
+    driver: bridge
+

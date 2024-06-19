@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get install -y wget llvm bc g++ clang gpg curl tar xz-utils make gcc flex bison libssl-dev \
     libelf-dev protobuf-compiler pkg-config libunwind-dev libprotobuf-dev libevent-dev libgtest-dev \
-    iproute2 ethtool iputils-ping git net-tools linux-headers-generic systemd
+    iproute2 ethtool iputils-ping git net-tools linux-headers-generic systemd bpftrace gdb kmod
 
 # Install kernel 5.8.0
 RUN wget https://raw.githubusercontent.com/pimlie/ubuntu-mainline-kernel.sh/master/ubuntu-mainline-kernel.sh && \
@@ -18,6 +18,9 @@ RUN echo "#!/bin/bash\nreboot" > /usr/sbin/reboot && chmod +x /usr/sbin/reboot
 
 # Clone the Electrode repository
 COPY ./Electrode /app
+COPY ./scenario5/fast_common.h /app/xdp-handler
+COPY ./scenario5/fast_user.c /app/xdp-handler
+COPY ./scenario5/config.txt /app
 
 WORKDIR /app
 

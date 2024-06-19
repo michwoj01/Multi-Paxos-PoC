@@ -1,0 +1,8 @@
+f 3
+replica replica1:10001
+replica replica2:10002
+replica replica3:10003
+replica replica4:10004
+replica replica5:10005
+replica replica6:10006
+replica replica7:10007

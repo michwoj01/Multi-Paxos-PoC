@@ -278,11 +278,13 @@ void read_config() {
 	char str[INET_ADDRSTRLEN];
 	struct paxos_configure conf;
 
-	const char *eths[FAST_REPLICA_MAX] = {"02:42:ac:12:00:02",
-										"02:42:ac:12:00:03", 
-										"02:42:ac:12:00:04", 
-										"", 
-										""}; 
+	const char *eths[FAST_REPLICA_MAX] = {"02:42:ac:13:00:02",
+										"02:42:ac:13:00:03",
+										"02:42:ac:13:00:04",
+										"02:42:ac:13:00:05",
+										"02:42:ac:13:00:06",
+										"02:42:ac:13:00:07",
+										"02:42:ac:13:00:08"};
 
 	fp = fopen("../config.txt", "r");
 	fscanf(fp, "%s", buff); // must be 'f'
