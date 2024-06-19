@@ -53,13 +53,10 @@ Each scenario directory contains:
 
 All Dockerfiles have in general the same structure:
 * Install required apt packages on Ubuntu 20.04
-* Install kernel 5.8.0 and headers
-* Reboot to use the new kernel
 * Clone the Electrode repository and files specific for the scenario
 * Build the Electrode
 * Configure NIC and irqbalance
 * Execute script with:
-    * mounting BPF filesystem 
     * running `fast` script on NIC 
     * command you specify in the Docker Compose file
 

@@ -1,3 +1,5 @@
 #!/bin/bash
-./xdp-handler/fast ens1f1np1
+mkdir -p /sys/fs/bpf
+mount -t bpf bpf /sys/fs/bpf
+./xdp-handler/fast eth0 &
 exec "$@"

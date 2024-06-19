@@ -29,10 +29,10 @@ RUN bash kernel-src-download.sh && \
     cd .. && make clean && make CXXFLAGS="-DTC_BROADCAST" PARANOID=0
 
 # Configure NIC and irqbalance
-RUN ip link show ens1f1np1 && ip link set ens1f1np1 mtu 3000 up || echo "Interface ens1f1np1 not found, skipping configuration" && \
-    ethtool -C ens1f1np1 adaptive-rx off adaptive-tx off rx-frames 1 rx-usecs 0 tx-frames 1 tx-usecs 0 && \
-    ethtool -L ens1f1np1 combined 1 && \
+RUN ip link show eth0 && ip link set eth0 mtu 3000 up || echo "Interface eth0 not found, skipping configuration" && \
+    ethtool -C eth0 adaptive-rx off adaptive-tx off rx-frames 1 rx-usecs 0 tx-frames 1 tx-usecs 0 && \
+    ethtool -L eth0 combined 1 && \
     service irqbalance stop && \
-    (let CPU=0; cd /sys/class/net/ens1f1np1/device/msi_irqs/; for IRQ in *; do echo $CPU | tee /proc/irq/$IRQ/smp_affinity_list; done) || echo "Skipping IRQ configuration"
+    (let CPU=0; cd /sys/class/net/eth0/device/msi_irqs/; for IRQ in *; do echo $CPU | tee /proc/irq/$IRQ/smp_affinity_list; done) || echo "Skipping IRQ configuration"
 
 ENTRYPOINT ["/usr/local/bin/start.sh"]

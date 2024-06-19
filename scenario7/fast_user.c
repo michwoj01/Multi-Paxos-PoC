@@ -286,7 +286,7 @@ void read_config() {
 										"02:42:ac:13:00:07",
 										"02:42:ac:13:00:08"};
 
-	fp = fopen("../config.txt", "r");
+	fp = fopen("./config.txt", "r");
 	fscanf(fp, "%s", buff); // must be 'f'
 	fscanf(fp, "%d", &f);
 	for (int i = 0; i < 2*f + 1; ++i) {
