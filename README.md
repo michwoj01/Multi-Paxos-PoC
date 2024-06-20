@@ -67,3 +67,9 @@ Client container after proper initialization will send requests to the replicas 
 For 3 replicas, the optimization makes latency drop from 1670ms to 1314ms, which is approximately 21% acceleration.
 
 ![alt text](./imgs/image.png)
+
+To check whether the eBPF program is attached to the TC hook, you can go inside any replica and use the following command:
+```
+docker exec -it replica1 /bin/bash
+bpftool prog show
+```
