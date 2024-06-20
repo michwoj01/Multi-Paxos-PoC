@@ -73,6 +73,13 @@ To check whether the eBPF program is attached to the TC hook, you can go inside 
 docker exec -it replica1 /bin/bash
 bpftool prog show
 ```
+This will display a list of all eBPF programs currently loaded into the kernel. Below are all the programs we loaded during our experiments.
+
+![](./imgs/ebpf1.png)
+![](./imgs/ebpf2.png)
+![](./imgs/ebpf3.png)
+![](./imgs/ebpf4.png)
+![](./imgs/ebpf5.png)
 
 Unfortunately, we faced issues with 5 and 7 replicas scenarios. After launching the scenario, the client container warms up correctly, but then replicas start being confused about request and suddenly part of them (with higher indexes) errors with `Segmentation fault`. We tried to debug the issue, but we didn't manage to find the root cause. We suspect that the issue is related to the kernel version (Docker container takes the host kernel version) or the wrong combination of steps we made in the Dockerfile.
 
