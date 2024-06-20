@@ -75,11 +75,11 @@ bpftool prog show
 ```
 This will display a list of all eBPF programs currently loaded into the kernel. Below are all the programs we loaded during our experiments.
 
-![](./imgs/ebpf1.png)
-![](./imgs/ebpf2.png)
-![](./imgs/ebpf3.png)
-![](./imgs/ebpf4.png)
-![](./imgs/ebpf5.png)
+<img src="imgs/ebpf1.png" alt="ebpf1" height="500" />
+<img src="imgs/ebpf2.png" alt="ebpf2" height="500" />
+<img src="imgs/ebpf3.png" alt="ebpf3" height="500" />
+<img src="imgs/ebpf4.png" alt="ebpf4" height="500" />
+<img src="imgs/ebpf5.png" alt="ebpf5" height="500" />
 
 Unfortunately, we faced issues with 5 and 7 replicas scenarios. After launching the scenario, the client container warms up correctly, but then replicas start being confused about request and suddenly part of them (with higher indexes) errors with `Segmentation fault`. We tried to debug the issue, but we didn't manage to find the root cause. We suspect that the issue is related to the kernel version (Docker container takes the host kernel version) or the wrong combination of steps we made in the Dockerfile.
 
